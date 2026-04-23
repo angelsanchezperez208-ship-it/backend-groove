@@ -47,6 +47,8 @@ app.use('/api/vinilos', require('./routes/viniloRoutes'))
 // Todas las rutas de usuarios → /api/usuarios
 app.use('/api/usuarios', require('./routes/usuarioRoutes'))
 
+app.use('/api/carrito', require('./routes/carritoRoutes'))
+
 // Ruta raíz: útil para verificar que el servidor está en pie
 // en Postman o en el browser
 app.get('/', (req, res) => {
