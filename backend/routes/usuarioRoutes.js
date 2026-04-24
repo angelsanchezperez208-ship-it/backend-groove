@@ -1,7 +1,6 @@
 // ============================================================
 // routes/usuarioRoutes.js
-// Define los endpoints para el manejo de usuarios:
-// registro, login y perfil.
+// Define los endpoints para el manejo de usuarios.
 // ============================================================
 
 const express = require('express')
@@ -11,13 +10,15 @@ const {
     registrarUsuario,
     loginUsuario,
     getPerfil,
-    getUsuarios
+    actualizarPerfil,
+    getUsuarios,
+    eliminarUsuario
 } = require('../controllers/usuarioController')
 
 const { protect, soloAdmin } = require('../middleware/authMiddleware')
 
 // ============================================================
-// RUTAS DE AUTENTICACIÓN (públicas)
+// RUTAS PÚBLICAS
 // ============================================================
 
 // POST /api/usuarios/registro  → Crear cuenta nueva
@@ -30,10 +31,21 @@ router.post('/login', loginUsuario)
 // RUTAS PRIVADAS (requieren token JWT)
 // ============================================================
 
-// GET /api/usuarios/perfil     → Ver mi propio perfil (usuario logueado)
-router.get('/perfil', protect, getPerfil)
+// GET /api/usuarios/perfil     → Ver mi propio perfil
+// PUT /api/usuarios/perfil     → Editar mi propio perfil
+router
+    .route('/perfil')
+    .get(protect, getPerfil)
+    .put(protect, actualizarPerfil)
 
-// GET /api/usuarios            → Ver todos los usuarios (solo admin)
+// ============================================================
+// RUTAS SOLO ADMIN
+// ============================================================
+
+// GET /api/usuarios            → Ver todos los usuarios
 router.get('/', protect, soloAdmin, getUsuarios)
+
+// DELETE /api/usuarios/:id     → Eliminar un usuario por ID
+router.delete('/:id', protect, soloAdmin, eliminarUsuario)
 
 module.exports = router

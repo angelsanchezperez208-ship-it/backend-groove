@@ -57,22 +57,12 @@ const usuarioSchema = mongoose.Schema(
 // Esta función se ejecuta ANTES de guardar un documento en la BD.
 // Su propósito es encriptar la contraseña usando bcrypt.
 // ============================================================
-usuarioSchema.pre('save', async function (next) {
-    // Si la contraseña NO fue modificada (ej: solo se actualizó el nombre),
-    // saltamos este paso para no volver a encriptarla
+usuarioSchema.pre('save', async function () {
     if (!this.isModified('password')) {
-        return next()
+        return
     }
-
-    // El "salt" es un valor aleatorio que bcrypt agrega al hash para más seguridad.
-    // El número (10) indica las "rondas" de procesamiento: más rondas = más seguro pero más lento.
-    // 10 es el estándar recomendado para proyectos en producción.
     const salt = await bcrypt.genSalt(10)
-
-    // Reemplazamos el texto plano de la contraseña con el hash encriptado
     this.password = await bcrypt.hash(this.password, salt)
-
-    next() // Continuamos con el guardado
 })
 
 // ============================================================
