@@ -271,7 +271,7 @@ const confirmarCompra = asyncHandler(async (req, res) => {
     await carrito.save()
 
     res.status(200).json({
-        mensaje: '¡Compra confirmada con éxito! 🎵',
+        mensaje: '¡Compra confirmada con éxito! ',
         resumen,
         totalCompra,
         carritoVaciado: true

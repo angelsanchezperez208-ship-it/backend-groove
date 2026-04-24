@@ -70,11 +70,10 @@ const carritoSchema = mongoose.Schema(
 // Cada vez que se guarda el carrito, recalculus el total
 // sumando precio * cantidad de cada ítem.
 // ============================================================
-carritoSchema.pre('save', function (next) {
+carritoSchema.pre('save', function () {
     this.total = this.items.reduce((acc, item) => {
         return acc + item.precioUnitario * item.cantidad
     }, 0)
-    next()
 })
 
 module.exports = mongoose.model('Carrito', carritoSchema)
