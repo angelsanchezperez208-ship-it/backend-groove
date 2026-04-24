@@ -1,9 +1,4 @@
-// ============================================================
-// routes/carritoRoutes.js
-// Define los endpoints para el carrito de compras.
-// Todas las rutas son privadas (requieren token JWT).
-// ============================================================
-
+// Rutas del carrito de compras
 const express = require('express')
 const router = express.Router()
 
@@ -18,31 +13,20 @@ const {
 
 const { protect } = require('../middleware/authMiddleware')
 
-// Todas las rutas del carrito requieren estar logueado
+// Todas las rutas del carrito requieren estar logueado (token)
 router.use(protect)
 
-// ============================================================
-// GET    /api/carrito          → Ver mi carrito
-// POST   /api/carrito          → Agregar un vinilo al carrito
-// DELETE /api/carrito          → Vaciar todo el carrito
-// ============================================================
+// CRUD del carrito
 router
     .route('/')
     .get(getCarrito)
     .post(agregarItem)
     .delete(vaciarCarrito)
 
-// ============================================================
-// POST /api/carrito/confirmar  → Confirmar compra (descuenta stock)
-// ============================================================
-// IMPORTANTE: esta ruta debe ir ANTES de /:viniloId
-// para que Express no confunda "confirmar" con un ID
+// Confirmar compra (tiene que ir antes de /:viniloId para que no choque)
 router.post('/confirmar', confirmarCompra)
 
-// ============================================================
-// PUT    /api/carrito/:viniloId → Cambiar cantidad de un ítem
-// DELETE /api/carrito/:viniloId → Eliminar un ítem específico
-// ============================================================
+// Operaciones sobre un vinilo específico en el carrito
 router
     .route('/:viniloId')
     .put(actualizarItem)
